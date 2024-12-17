@@ -1,0 +1,287 @@
+/* General Styles */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    display:flex;
+    flex-direction: column;
+    background-color: #f4f4f4;
+    margin-right: 380px;  /* Light background color for contrast */
+}
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px; /* Adjust based on your layout */
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px;
+    justify-content: center;
+    /* Adding padding-top to ensure space for streak card */
+    padding-top: 100px; /* Adjust this value to provide space for the streak card */
+    align-items: center;
+}
+.streak-card {
+    position: fixed;
+    top: 20px; /* Distance from the top */
+    right: 20px; /* Distance from the right */
+    max-width: 350px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 0; /* No rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+     z-index: 1000;
+}
+.streak-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.streak-header h2 {
+    font-size: 22px;
+    margin: 0;
+}
+
+.reset-time {
+    font-size: 14px;
+    color: #007bff;
+    background-color: #f0f0f0;
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.streak-day-count {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #333;
+}
+
+.streak-dates {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.streak-date {
+    flex: 1 1 14%; /* Allows up to 7 items per row */
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.streak-circle {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    color: #f0f0f0;
+    border-radius: 50%;
+}
+
+.streak-circle.active {
+    color: #ff5722;
+}
+
+.streak-circle i {
+    font-size: 18px;
+}
+
+.report-button {
+    position: absolute;
+    bottom: -50px; /* Position the button below the card */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%; /* Full width of the card */
+    box-sizing: border-box; /* Includes padding in width */
+}
+
+.report-button:hover {
+    background-color: #0056b3;
+}
+
+.post-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto; /* Center the post cards horizontally and add vertical margin */
+    margin-left: 360px;
+}
+.post-header {
+    display: flex;
+    align-items: center;
+}
+
+.post-header img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.post-info {
+    margin-left: 10px;
+}
+
+.post-author {
+    font-weight: bold;
+}
+
+.post-time {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.title {
+    margin: 10px 0;
+}
+
+.media img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.post-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.action-btn i {
+    margin-right: 5px;
+}
+
+.comment-box {
+    margin-top: 10px;
+}
+
+.comment-box textarea {
+    width: 100%;
+    height: 80px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.btn-submit {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+    transition: opacity 0.3s ease; /* Smooth transition for appearance */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto; /* Center the modal */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px; /* Rounded corners */
+    width: 80%; /* Full width */
+    max-width: 500px; /* Maximum width */
+    position: relative; /* Positioning relative for close button */
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+h2 {
+    font-size: 18px;
+    margin-top: 0;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.btn-submit {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+.btn-submit:focus {
+    outline: none;
+}
+
+/* Media query for responsive design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%; /* Adjust width for smaller screens */
+    }
+}

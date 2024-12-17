@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        .user-list-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .user-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .user-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .user-list li:last-child {
+            border-bottom: none;
+        }
+
+        .user-list a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .user-list a:hover {
+            color: #2c6f2f;
+        }
+
+        /* Style for the Edit Link */
+        .edit-link {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="user-list-container">
+        <h1>User List</h1>
+        <ul class="user-list">
+            <li th:each="user : ${users}">
+                <span th:text="${user.username}"></span>
+                 <!---<a th:href="@{/admin/edit-user/{id}(id=${user.id})}" class="edit-link">Edit</a> -->
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>

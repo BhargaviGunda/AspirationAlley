@@ -1,0 +1,1053 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f2ef;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            /* Center posts horizontally */
+            margin-top: 60px;
+            /* Adjust based on navbar height */
+            padding: 20px;
+        }
+
+        /*navbar*/
+        .navbar {
+            background-color: rgb(128, 128, 0);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .navbar-text {
+            padding-left: 20px;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 20px;
+            /* Adjust font size */
+            font-weight: bold;
+            /* Make text bold */
+            color: white;
+            /* Adjust text color */
+        }
+
+        .navbar .links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a:hover {
+            background-color: rgb(245, 245, 220);
+            color: black;
+            border-radius: 3px;
+        }
+
+        .navbar .login-signup,
+        .navbar .logout {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .login-signup a,
+        .navbar .logout a {
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            color: #f2f2f2;
+        }
+
+        .navbar .login-signup a:hover,
+        .navbar .logout a:hover {
+            background-color: rgb(245, 245, 220);
+            border-radius: 3px;
+            color: black;
+        }
+
+        .act {
+            background-color: rgb(142, 147, 108);
+            border-radius: 3px;
+
+        }
+
+        .links a i {
+            margin-right: 8px;
+        }
+
+        /*profile-card*/
+        .container-profile-card {
+            position: fixed;
+            z-index: 1000;
+            width: 100%;
+            max-width: 300px;
+            /* Fixed width similar to LinkedIn's sidebar */
+            top: 110px;
+            left: 20px;
+            /* Adds some spacing around the container */
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-picture-profile-card {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            /* Space between the picture and the welcome text */
+            position: relative;
+        }
+
+        .profile-picture-profile-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .h1-profile-card {
+            font-size: 20px;
+            margin: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        .a-profile-card {
+            background-color: rgb(128, 128, 0);
+            font-size: 42px;
+            color: white;
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 5px 0;
+            display: block;
+            width: 100%;
+            text-align: center;
+            border-radius: 3px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .notification {
+            background-color: #d4edda;
+            color: rgb(0, 64, 0);
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+            font-size: 15px;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .streak-card {
+            position: fixed;
+            top: 110px;
+            right: 20px;
+            z-index: 1000;
+            width: 100%;
+            max-width: 300px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .streak-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .streak-header h2 {
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .reset-time {
+            font-size: 14px;
+            color: rgb(128, 128, 64);
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 5px;
+        }
+
+        .streak-day-count {
+            font-size: 25px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .streak-dates {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .streak-date {
+            flex: 1 1 14%;
+            /* Allows up to 7 items per row */
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .streak-circle {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            color: #f0f0f0;
+            border-radius: 50%;
+        }
+
+        .streak-circle.active {
+            color: #ff5722;
+        }
+
+        .streak-circle i {
+            font-size: 38px;
+        }
+
+        .report-button {
+            position: absolute;
+            bottom: -50px;
+            /* Position the button below the card */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px;
+            background-color: rgb(128, 128, 0);
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            /* Full width of the card */
+            box-sizing: border-box;
+            /* Includes padding in width */
+        }
+
+        .report-button:hover {
+            background-color: rgb(128, 128, 0);
+        }
+
+        /*post-area*/
+
+        .post-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px auto;
+            /* Center horizontally */
+            max-width: 600px;
+            /* Restrict the maximum width */
+            width: 100%;
+            /* Full width up to max-width */
+        }
+
+        /* Post Header */
+        .post-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .post-header img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+
+        .post-info {
+            margin-left: 10px;
+        }
+
+        .post-author {
+            font-weight: bold;
+        }
+
+        .post-time {
+            font-size: 4px;
+            color: #888;
+            margin-right: 400px;
+        }
+
+        .post-actions-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .actions-menu {
+            position: absolute;
+            top: 45px;
+            min-width: 100px;
+            right: 0;
+            background-color: rgb(255, 255, 255);
+            border: 1px solid rgb(128, 128, 64);
+            box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.1);
+            z-index: 10;
+            padding: 5px;
+            display: none;
+            border-radius: 4px;
+        }
+
+        .actions-menu button {
+            display: block;
+            width: 100%;
+            border: none;
+            background: none;
+            padding: 8px 15px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .actions-menu button:hover {
+            border-radius: 5px;
+            ;
+            background-color: rgb(209, 199, 175);
+        }
+
+        .three-dots {
+            cursor: pointer;
+            font-size: 20px;
+            color: rgb(0, 0, 0);
+        }
+
+        .flag {
+            color: red;
+        }
+
+        .report-modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1000;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Black background with opacity */
+            transition: opacity 0.3s ease;
+            /* Smooth transition for appearance */
+        }
+
+        /* Modal Content */
+        .report-modal-content {
+			background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            max-width: 500px;     
+            position: relative;
+         
+            
+        }
+
+        /* Buttons */
+        .report-modal button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .report-modal-content .yes {
+            background-color: #45a049;
+        }
+
+        .report-modal-content .no {
+            background-color: #da190b;
+        }
+
+        /* Title */
+        .description {
+            margin: 10px;
+        }
+
+        .description-container {
+            display: inline;
+        }
+
+        .description .dots {
+            display: inline;
+
+        }
+
+        .description .more {
+            display: none;
+            overflow-wrap: break-word;
+            margin: 0;
+        }
+
+        .see-more {
+
+            display: inline;
+            background-color: transparent;
+            border: none;
+            color: rgb(128, 128, 128);
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        /* Media */
+        .media img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* Post Actions */
+        .post-actions {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            background: none;
+            border: none;
+            color: black;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0px 20px;
+        }
+
+        .lk,
+        .shr,
+        .cmnt {
+            color: rgb(0, 0, 0);
+        }
+
+        .action-btn i {
+            margin-right: 5px;
+        }
+		   /* Comments section container */
+		.comments-section h4 {
+		    font-size: small;
+		    margin: 10px 20px;
+		    font-weight: bold;
+		    font-family: Arial, sans-serif;
+		}
+		/* Individual comment container */
+		.comment {
+		    display: flex;
+		    align-items: center;
+		    margin-left:20px;
+		    margin-bottom: 12px;
+		    padding: 0;
+		    border-bottom: 1px solid #e6e6e6; /* Subtle separator line */
+		    padding-bottom: 8px;
+		    max-width: 500px;
+		    font-family: Arial, sans-serif;
+		}
+
+
+		/* Profile picture */
+		.comment img {
+		    width: 35px; /* Smaller profile picture */
+		    height: 35px;
+		    border-radius: 50%;
+		    object-fit: cover;
+		    margin-right: 10px;
+		}
+		/* Comment details (username, text) */
+		.comment-details {
+		    display: flex;
+		    flex-direction: column;
+		    line-height: 1.4; /* Adjust line spacing */
+		    color: #262626;
+		}
+		
+
+        /* Comment Box */
+        .comment-box {
+            margin-top: 10px;
+        }
+
+        .comment-box textarea {
+            width: 100%;
+            height: 80px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border: none;
+            background-color: rgb(128, 128, 0);
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: rgb(128, 128, 64);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1000;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Black background with opacity */
+            transition: opacity 0.3s ease;
+            /* Smooth transition for appearance */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            /* Center the modal */
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            /* Rounded corners */
+            width: 80%;
+            /* Full width */
+            max-width: 500px;
+            /* Maximum width */
+            position: relative;
+            /* Positioning relative for close button */
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* Modal Header */
+        h2 {
+            font-size: 18px;
+            margin-top: 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .btn-submit {
+            padding: 10px 20px;
+            border: none;
+            background-color: rgb(128, 128, 0);
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-submit:focus {
+            outline: none;
+        }
+
+        footer {
+            background-color: rgb(32, 32, 0);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 20px;
+            margin-top: auto;
+            /* This ensures footer is always at the bottom of the page */
+        }
+
+        /* Media Query for Responsive Design */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 90%;
+                /* Adjust width for smaller screens */
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <img th:if="${logoImageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${logoImageBase64}"
+                alt="Logo Image" />
+            <span class="navbar-text">ASPIRANT'S ALLEY</span>
+        </div>
+        <div class="links">
+            <!-- Home Link -->
+            <a href="/" class="home act"><i class="fas fa-home"></i> Home</a>
+
+            <!-- About Link -->
+            <a href="/about" class="about"><i class="fas fa-info-circle"></i> About</a>
+
+            <!-- Contact Link -->
+            <a href="/contact" class="contact"><i class="fas fa-envelope"></i> Contact</a>
+
+            <!-- Profile Link (conditionally rendered) -->
+            <a th:href="${isLoggedIn} ? '/profile' : '/login'" class="profile">
+                <i class="fas fa-user"></i> Profile
+            </a>
+
+            <!-- Logout Link -->
+            <a href="/logout" class="logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="container-profile-card">
+            <div class="home-content-profile-card">
+                <div class="profile-picture-profile-card">
+                    <img th:src="${user.base64ProfilePicture != null ? 'data:image/jpeg;base64,' + user.base64ProfilePicture : 'data:image/jpeg;base64,' + profileImageBase64}"
+                        alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%;">
+
+                </div>
+                <h1 class="h1-profile-card">Welcome <span th:text="${user.username}">User</span> !</h1>
+                <a class="a-profile-card" th:href="${isLoggedIn} ? '/create-post' : '/login'">+</a>
+                <div id="notification" class="notification" th:text="${message}"></div>
+
+            </div>
+        </div>
+        <div class="posts-section">
+            <!-- Posts content goes here -->
+
+            <div class="post-card" th:each="post : ${posts}">
+                <div class="post-header">
+                    <img
+                        th:src="${post.profileBase64 != null ? 'data:image/jpeg;base64,' + post.profileBase64 : 'data:image/jpeg;base64,' + profileImageBase64}">
+                    <div class="post-info">
+                        <div class="post-author" th:text="${post.authorName}">Author</div>
+                        <div class="post-time" th:text="${post.formattedTimestamp}">Time</div>
+                    </div>
+                    <div class="post-actions-dropdown">
+                        <!-- Three Dots Icon -->
+                        <span class="three-dots" th:onclick="'toggleActionsMenu(\'actionsMenu' + ${post.id} + '\')'">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
+
+                        <!-- Actions Menu -->
+                        <div class="actions-menu" th:id="'actionsMenu' + ${post.id}" style="display: none;">
+                            <button th:onclick="|showReportModal(${post.id})|">Report <i
+                                    class="fa fa-flag flag"></i></button>
+                        </div>
+                    </div>
+                    <div id="reportConfirmationModal" class="report-modal" style="display: none;">
+                        <div class="report-modal-content">
+                            <p>Are you sure you want to report this post?</p>
+                            <button class="yes" id="confirmReportBtn">Yes</button>
+                            <button class="no" onclick="closeReportModal()">No</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <div class="description-container" th:id="'description-container-' + ${post.id}">
+                        <p class="description">
+                            <span
+                                th:text="${post.content.length() > 45 ? post.content.substring(0, 45) : post.content}">
+                                This is the visible part of the description.
+                            </span>
+                            <span class="dots" th:if="${post.content.length() > 45}">...</span>
+                            <span class="more" th:if="${post.content.length() > 45}"
+                                th:text="${post.content.substring(45)}" style="display: none;">
+                                This is the hidden content.
+                            </span>
+                            <button class="see-more"
+                                th:onclick="'toggleDescription(\'description-container-' + ${post.id} + '\', this)'"
+                                th:if="${post.content.length() > 45}">
+                                See More
+                            </button>
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="media">
+                    <img th:if="${post.base64MediaData != null}"
+                        th:src="'data:image/jpeg;base64,' + ${post.base64MediaData}" alt="Post Image" />
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn like-btn" th:onclick="'likePost(' + ${post.id} + ')'">
+
+                        <i th:id="'like-icon-' + ${post.id}" class="fas fa-thumbs-up lk"></i>
+                        <span style="cursor: default;" th:id="'like-count-' + ${post.id}"
+                            th:text="${post.likes}">0</span>
+                    </button>
+					<button class="action-btn comment-btn"
+					        th:onclick="'toggleCommentBox(\'commentBox' + ${post.id} + '\', ' + ${post.id} + ')'">
+					        <i class="fas fa-comment cmnt"></i> Comment
+					    </button>
+                    <button class="action-btn share-btn"
+                        th:onclick="'openShareModal(\'shareModal' + ${post.id} + '\', \'http://localhost:8080/' + ${post.id} + '\')'">
+                        <i class="fas fa-share shr"></i> Share
+                    </button>
+                </div>
+                
+			    <div class="comment-box" th:id="'commentBox' + ${post.id}" style="display: none;">
+			        <textarea th:id="'commentInput' + ${post.id}" placeholder="Write a comment..."></textarea>
+			        <button class="btn-submit" th:onclick="'postComment(' + ${post.id} + ')'">Post Comment</button>
+			    </div>
+                <!-- Modal HTML -->
+                <div th:id="'shareModal' + ${post.id}" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close" th:onclick="'closeModal(\'shareModal' + ${post.id} + '\')'">&times;</span>
+                        <h2>Share this Post</h2>
+                        <input type="text" th:id="'shareLink' + ${post.id}" placeholder="Create a link"
+                            th:value="'https://example.com/post/' + ${post.id}" readonly />
+                        <center><button class="btn-submit" th:onclick="'copyLink(\'shareLink' + ${post.id} + '\')'">Copy
+                                Link</button></center>
+                    </div>
+                </div>
+                <input type="hidden" th:value="${user.id}" name="userId">
+            </div>
+        </div>
+        <!--Streak-section -->
+        <div class="streak-card">
+            <div class="streak-header">
+                <h2>My Streak</h2>
+                <span class="reset-time">Resets at 11:59PM IST </span>
+            </div>
+            <div class="streak-day-count"
+                th:text="'All time Streak - '+${streakCount != null ? streakCount : 0} + ' day(s)'">0 day(s)</div>
+            <div class="streak-dates">
+                <div class="streak-date" th:each="date, iterStat : ${streakDates}">
+                    <div class="streak-circle" th:classappend="${activeStreak[iterStat.index]} ? 'active' : ''">
+                        <i th:classappend="${activeStreak[iterStat.index]} ? 'fas fa-fire' : 'fas fa-circle'"></i>
+                    </div>
+                    <div th:text="${date}"></div>
+                </div>
+            </div>
+            <button class="report-button"
+                th:onclick="${isLoggedIn} ? 'location.href=\'/report-user\'' : 'location.href=\'/login\''">Report
+                User</button>
+            <div id="notification2" class="notification" th:text="${reportMessage}"></div>
+        </div>
+    </div>
+    <footer>
+        <p>© 2024 ASPIRANT'S ALLEY. All Rights Reserved.</p>
+    </footer>
+    <script>
+        // Function to toggle the actions menu
+        function toggleActionsMenu(menuId) {
+            const menu = document.getElementById(menuId);
+            if (menu) {
+                // Toggle visibility of the menu
+                const isMenuVisible = menu.style.display === 'block';
+                closeAllMenus(); // Close any other open menus
+                menu.style.display = isMenuVisible ? 'none' : 'block';
+            }
+
+            // When the user clicks anywhere outside the menu, close it
+            window.onclick = function (event) {
+                const isClickOutsideMenu = !event.target.closest('.actions-menu') && !event.target.closest('.three-dots');
+                if (isClickOutsideMenu) {
+                    closeAllMenus();
+                }
+            };
+        }
+
+        function closeAllMenus() {
+            const menus = document.querySelectorAll('.actions-menu');
+            menus.forEach(menu => {
+                menu.style.display = 'none';
+            });
+        }
+        // Function to show the report modal
+        function showReportModal(postId) {
+            // Show the report confirmation modal
+            const modal = document.getElementById('reportConfirmationModal');
+            modal.style.display = 'block';
+
+            // Attach event listener for the "Yes" button in the modal
+            document.getElementById('confirmReportBtn').onclick = function () {
+                reportPost(postId); // Send AJAX request to report the post
+            };
+        }
+
+        // Function to close the report modal
+        function closeReportModal() {
+            const modal = document.getElementById('reportConfirmationModal');
+            modal.style.display = 'none';
+        }
+
+        function reportPost(postId) {
+            const userId = document.querySelector('input[name="userId"]').value.trim();
+
+            // Send AJAX request to report the post
+            fetch(`/reportPost/${postId}?userId=${userId}`, {
+                method: 'POST',
+            })
+                .then(response => response.json())  // Parse the JSON response
+                .then(data => {
+                    if (data.success) {
+                        alert('Post reported successfully!');
+                    } else {
+                        alert('Failed to report the post: ' + data.message);
+                    }
+                    closeReportModal();  // Close the modal after the request is done
+                })
+                .catch(error => {
+                    console.error('Error reporting the post:', error);
+                    alert('An error occurred while reporting the post.');
+                    closeReportModal();
+                });
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            const notification = document.getElementById("notification");
+
+            if (notification.textContent.trim() !== "") {
+                notification.classList.add("show");
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 5000);
+            }
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const notification = document.getElementById("notification2");
+
+            if (notification.textContent.trim() !== "") {
+                notification.classList.add("show");
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 2000);
+            }
+        });
+        function toggleDescription(containerId, button) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                const dots = container.querySelector('.dots');
+                const moreText = container.querySelector('.more');
+                const isExpanded = moreText.style.display === 'inline';
+
+                if (isExpanded) {
+                    moreText.style.display = 'none'; // Hide the extra content
+                    dots.style.display = 'inline';  // Show the dots
+                    button.textContent = 'See More'; // Update button text
+                } else {
+                    moreText.style.display = 'inline'; // Show the extra content
+                    dots.style.display = 'none';      // Hide the dots
+                    button.textContent = 'See Less';  // Update button text
+                }
+            }
+        }
+        const likedPosts = {}; // Tracks local state for each post
+        const requestInProgress = {}; // Tracks ongoing requests for each post
+
+        function likePost(postId) {
+            // Prevent sending multiple simultaneous requests for the same post
+            if (requestInProgress[postId]) return;
+
+            // Lock the request
+            requestInProgress[postId] = true;
+
+            // Toggle the like status locally
+            let isLiked = likedPosts[postId] || JSON.parse(localStorage.getItem(`likedPost-${postId}`)) || false;
+            isLiked = !isLiked;
+
+            // Save the updated status locally
+            likedPosts[postId] = isLiked;
+            localStorage.setItem(`likedPost-${postId}`, JSON.stringify(isLiked));
+
+            // Update the UI immediately (optimistic UI update)
+            const likeIcon = document.getElementById(`like-icon-${postId}`);
+            likeIcon.classList.toggle('liked', isLiked);
+
+            fetch(`/posts/${postId}/like?isLiked=${isLiked}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            })
+                .then(response => response.json())
+                .then(updatedLikes => {
+                    // Update the like count displayed on the page
+                    const likeCountElement = document.getElementById(`like-count-${postId}`);
+                    likeCountElement.textContent = updatedLikes;
+
+                    // Release the lock
+                    requestInProgress[postId] = false;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    // Revert the optimistic UI update on failure
+                    likedPosts[postId] = !isLiked;
+                    localStorage.setItem(`likedPost-${postId}`, JSON.stringify(!isLiked));
+                    likeIcon.classList.toggle('liked', !isLiked);
+
+                    // Release the lock
+                    requestInProgress[postId] = false;
+                });
+        }
+
+
+
+        function toggleCommentBox(commentBoxId, postId) {
+		    const commentBox = document.getElementById(commentBoxId);
+		    if (commentBox) {
+		        // Toggle visibility of the comment box
+		        commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
+			    //if (commentBox.style.display === 'block') {
+	            //loadComments(postId);  }
+	    	}
+		}
+		function postComment(postId) {
+    const commentInput = document.getElementById(`commentInput${postId}`);
+    const commentText = commentInput.value.trim();
+    const userId = document.querySelector('input[name="userId"]').value.trim();
+
+    if (!commentText) {
+        alert('Please write a comment before posting.');
+        return;
+    }
+
+    fetch(`/posts/${postId}/comments`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: commentText, userid: userId })
+})
+.then(response => {
+    if (!response.ok) {
+        alert('Failed to post comment');
+        return;
+    }
+    return response.json(); // Parse JSON only if the response is OK
+})
+.then(data => {
+    console.log('Comment posted successfully:', data);
+    // Perform further actions with the response, like updating the UI
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+}
+
+
+
+
+        function openShareModal(modalId, link) {
+            // Open the share modal by setting its display style to 'block'
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+
+                // Update the link input field if needed
+                const linkInput = modal.querySelector('input[type="text"]');
+                if (linkInput) {
+                    linkInput.value = link; // Set the share link
+                }
+            }
+        }
+
+        function closeModal(modalId) {
+            // Close the modal by setting its display style to 'none'
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function copyLink(linkId) {
+            // Copy the share link to the clipboard
+            const linkInput = document.getElementById(linkId);
+            if (linkInput) {
+                linkInput.select(); // Select the text in the input field
+                document.execCommand('copy'); // Copy the selected text to the clipboard
+                alert('Link copied to clipboard!'); // Show a confirmation message
+            }
+        }
+
+    </script>
+</body>
+
+</html>

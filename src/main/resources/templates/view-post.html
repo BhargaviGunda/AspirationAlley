@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Post</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<style>
+	/* styles.css */
+
+	/* Basic page layout */
+	body {
+	    font-family: Arial, sans-serif;
+	    background-color: #f9f9f9;
+	    margin: 0;
+	    padding: 0;
+	}
+
+	/* Main container for the view post section */
+	.view-post {
+	    max-width: 800px;
+	    margin: 20px auto;
+	    padding: 20px;
+	    background-color: #ffffff;
+	    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	    border-radius: 8px;
+	}
+
+	/* Title styling */
+	.view-post h1 {
+	    text-align: center;
+	    color: #333;
+	}
+
+	/* Styling for the post details section */
+	.post-details {
+	    margin-bottom: 20px;
+	    padding: 15px;
+	    border: 1px solid #ddd;
+	    border-radius: 5px;
+	    background-color: #f9f9f9;
+	}
+
+	.post-details p {
+	    font-size: 16px;
+	    line-height: 1.6;
+	    margin: 5px 0;
+	}
+
+	.post-details strong {
+	    font-weight: bold;
+	    color: #333;
+	}
+
+	.post-details span {
+	    color: #555;
+	}
+
+	/* Styling for the action buttons */
+	.post-actions {
+	    display: flex;
+	    justify-content: space-between;
+	    margin-top: 20px;
+	}
+
+	.post-actions form {
+	    display: inline-block;
+	}
+
+	button {
+	    padding: 10px 20px;
+	    font-size: 16px;
+	    cursor: pointer;
+	    border: none;
+	    border-radius: 5px;
+	    transition: background-color 0.3s ease;
+	}
+
+	button:hover {
+	    opacity: 0.8;
+	}
+
+	/* Delete button specific styling */
+	button[type="submit"] {
+	    background-color: #f44336;
+	    color: white;
+	}
+
+	button[type="submit"]:hover {
+	    background-color: #d32f2f;
+	}
+
+	/* Approve button specific styling */
+	button[type="submit"]:nth-child(2) {
+	    background-color: #4CAF50;
+	    color: white;
+	}
+
+	button[type="submit"]:nth-child(2):hover {
+	    background-color: #388E3C;
+	}
+
+</style>
+<body>
+    <div class="view-post">
+        <h1>Post Details</h1>
+        <div class="post-details">
+            <p><strong>Title:</strong> <span th:text="${post.title}"></span></p>
+            <p><strong>Content:</strong> <span th:text="${post.content}"></span></p>
+            <p><strong>Author:</strong> <span th:text="${post.author.username}"></span></p>
+            <p><strong>Posted on:</strong> <span th:text="${post.timestamp}"></span></p>
+        </div>
+
+        <div class="post-actions">
+			<form th:action="@{/admin/delete-post/{id}(id=${post.id})}" method="post">
+			                <button type="submit">Deleteee Post</button>
+			            </form>
+            <form th:action="@{/admin/approve-post/{id}(id=${post.id})}" method="post">
+                <button type="submit">Approve Post</button>
+            </form>
+			<a th:href="@{/admin/view-post/{id}(id=${post.id})}">View</a>
+
+        </div>
+    </div>
+</body>
+</html>

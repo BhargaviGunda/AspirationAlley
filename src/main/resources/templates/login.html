@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+	<link rel="stylesheet" href="/static/css/login.css">
+
+   
+
+       
+
+	<style>
+	    @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap");
+
+	    * {
+	        margin: 0;
+	        padding: 0;
+	        box-sizing: border-box;
+	        font-family: "Open Sans", sans-serif;
+	    }
+
+	    body {
+	        display: flex;
+	        align-items: center;
+	        justify-content: center;
+	        min-height: 100vh;
+	        background: linear-gradient(to bottom right, #1e3c72, #2a5298);
+	        color: #fff;
+	        padding: 10px;
+	    }
+
+	    .wrapper {
+	        width: 100%;
+	        max-width: 360px;
+	        padding: 30px;
+	        text-align: center;
+	        border-radius: 10px;
+	        background: rgba(0, 0, 0, 0.6);
+	        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+	        backdrop-filter: blur(10px);
+	    }
+
+	    h1 {
+	        font-size: 2rem;
+	        margin-bottom: 20px;
+	        color: #f9f9f9;
+	        letter-spacing: 1px;
+	    }
+
+	    form {
+	        display: flex;
+	        flex-direction: column;
+	        gap: 15px;
+	    }
+
+	    .input-field {
+	        display: flex;
+	        flex-direction: column;
+	        text-align: left;
+	    }
+
+	    .input-field label {
+	        font-size: 14px;
+	        font-weight: 600;
+	        margin-bottom: 5px;
+	        color: #f1f1f1;
+	    }
+
+	    .input-field input {
+	        height: 40px;
+	        padding: 8px 10px;
+	        border: 2px solid transparent;
+	        border-radius: 5px;
+	        background: rgba(255, 255, 255, 0.1);
+	        color: #fff;
+	        outline: none;
+	        transition: all 0.3s ease;
+	    }
+
+	    .input-field input:focus {
+	        border-color: #00bcd4;
+	        background: rgba(255, 255, 255, 0.2);
+	    }
+
+	    p.error {
+	        color: #ff6b6b;
+	        font-size: 12px;
+	        margin-top: 5px;
+	    }
+
+	    .forget {
+	        display: flex;
+	        justify-content: space-between;
+	        font-size: 12px;
+	    }
+
+	    #remember {
+	        accent-color: #00bcd4;
+	    }
+
+	    .forget a {
+	        color: #00bcd4;
+	        text-decoration: none;
+	        transition: color 0.3s ease;
+	    }
+
+	    .forget a:hover {
+	        color: #fff;
+	    }
+
+	    button {
+	        padding: 12px;
+	        font-size: 16px;
+	        font-weight: 600;
+	        color: #fff;
+	        background: #00bcd4;
+	        border: none;
+	        border-radius: 5px;
+	        cursor: pointer;
+	        transition: background 0.3s ease, transform 0.2s ease;
+	    }
+
+	    button:hover {
+	        background: #0288d1;
+	        transform: scale(1.02);
+	    }
+
+	    .register-link {
+	        font-size: 14px;
+	        margin-top: 20px;
+	        color: #ccc;
+	    }
+
+	    .register-link a {
+	        color: #00bcd4;
+	        text-decoration: none;
+	        transition: color 0.3s ease;
+	    }
+
+	    .register-link a:hover {
+	        color: #fff;
+	    }
+
+	    @media (max-width: 480px) {
+	        .wrapper {
+	            padding: 20px;
+	        }
+
+	        h1 {
+	            font-size: 1.8rem;
+	        }
+
+	        button {
+	            padding: 10px;
+	            font-size: 14px;
+	        }
+	    }
+	</style>
+
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Login</h1>
+        <form action="#" th:action="@{/login}" method="post">
+            <div class="input-field">
+                <label for="username">Username</label> <!-- Label for Username -->
+                <input type="text" id="username" name="username" required>
+            </div>
+            <p class="error" th:if="${errorUsername}" th:text="${errorUsername}"></p>
+            <div class="input-field">
+                <label for="password">Password</label> <!-- Label for Password -->
+                <input type="password" id="password" name="password" required>
+            </div>
+            <p class="error" th:if="${errorPassword}" th:text="${errorPassword}"></p>
+			<div class="forget">
+			                
+			                <a href="#" th:href="@{/forgot-password}">Forgot password?</a>
+			            </div>
+            <button type="submit">Login</button>
+            <p class="error" th:if="${error}" th:text="${error}"></p> <!-- General error message -->
+            <div class="register-link">
+                <p>Don't have an account? <a href="#" th:href="@{/register}">Register</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

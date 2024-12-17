@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Contact Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("https://png.pngtree.com/thumb_back/fh260/background/20231104/pngtree-abstract-texture-background-pattern-olive-green-paper-image_13771814.png") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background-color: rgb(128, 128, 0);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .navbar-text {
+            padding-left: 20px;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .navbar .links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a:hover {
+            background-color: rgb(245, 245, 220);
+            color: black;
+            border-radius: 3px;
+        }
+
+        .links a i {
+            margin-right: 8px;
+        }
+
+        .navbar .login-signup, .navbar .logout {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .login-signup a, .navbar .logout a {
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            color: #f2f2f2;
+        }
+
+        .navbar .login-signup a:hover, .navbar .logout a:hover {
+            background-color: rgb(245, 245, 220);
+            border-radius: 3px;
+            color: black;
+        }
+
+        .active {
+            background-color: rgb(142, 147, 108);
+            border-radius: 3px;
+        }
+
+        .container {
+			
+			margin:30px;
+            width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgb(128, 128, 0);
+            border: 1px solid rgb(128, 128, 0);
+            border-radius: 18px;
+        }
+
+        form {
+            margin: 10px;
+        }
+
+        h2 {
+            margin: 0;
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        label {
+            margin-bottom: 15px;
+            display: block;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button {
+            width: 50%;
+            padding: 10px 0;
+            background-color: rgb(128, 128, 0);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .notification {
+            background-color: rgb(0, 64, 128);
+            color: rgb(255, 255, 255);
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+            font-size: 15px;
+        }
+        .notification.show {
+            display: block;
+        }
+
+        footer {
+            background-color: rgb(32, 32, 0);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 20px;
+            margin-top: auto;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const notification = document.getElementById("notification");
+
+            if (notification && notification.textContent.trim() !== "") {
+                notification.classList.add("show");
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 2000);
+            }
+        });
+    </script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <img th:if="${logoImageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${logoImageBase64}" alt="Logo Image" />
+            <span class="navbar-text">ASPIRANT'S ALLEY</span>
+        </div>
+        <div class="links">
+            <a href="/" class="home"><i class="fas fa-home"></i> Home</a>
+            <a href="/about" class="about"><i class="fas fa-info-circle"></i> About</a>
+            <a href="/contact" class="contact active"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="/profile" class="profile"><i class="fas fa-user"></i> Profile</a>
+            <a href="/logout" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+	<center>
+	    <div class="container">
+	        <h2>Contact Us</h2>
+	        <form action="/contact" method="post">
+	            <div class="form-group">
+	                <label for="username">Username</label>
+	                <input type="text" id="username" name="username" required>
+	            </div>
+	
+	            <div class="form-group">
+	                <label for="email">Your Email</label>
+	                <input type="text" id="email" name="email" required>
+	            </div>
+	            <div id="email-notification" class="notification"></div>
+	
+	            <div class="form-group">
+	                <label for="content">Message</label>
+	                <textarea id="content" name="content" required></textarea>
+	            </div>
+				<div id="notification" class="notification" th:text="${message}"></div>
+	            <center><button type="submit">Submit</button></center>
+	            
+	        </form>
+	    </div>
+    </center>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 ASPIRANT'S ALLEY. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

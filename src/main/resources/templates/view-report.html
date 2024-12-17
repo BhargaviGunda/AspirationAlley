@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View Report</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Report Details</h1>
+    <p><strong>Reported User:</strong> <span th:text="${report.user.username}"></span></p>
+    <p><strong>Reason:</strong> <span th:text="${report.content}"></span></p>
+    <p><strong>Reported on:</strong> <span th:text="${report.createdAt}"></span></p>
+
+    <form th:action="@{/admin/approve-report/{id}(id=${report.id})}" method="post">
+        <button type="submit">Approve Report</button>
+    </form>
+
+    <form th:action="@{/admin/delete-report/{id}(id=${report.id})}" method="post">
+        <button type="submit">Delete Report</button>
+    </form>
+
+    <a href="/admin/view-reports">Back to Report List</a>
+</body>
+</html>

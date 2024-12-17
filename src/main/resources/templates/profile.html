@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .navbar {
+            background-color: rgb(128, 128, 0);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px 5px 20px;
+            height: 60px;
+        }
+		.navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .logo img {
+			border-radius: 50%;
+            height: 40px;
+        }
+		.navbar-text {
+			padding-left:20px;
+			font-family: "Times New Roman", Times, serif;
+			font-size: 20px; 
+			font-weight: bold; 
+			color: white; 
+		}
+        .navbar a {
+            color: #f2f2f2;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {
+            background-color: rgb(245, 245, 220);
+            color: black;
+            border-radius: 3px;
+        }
+		 .act{
+            background-color: rgb(142, 147, 108);
+            border-radius: 3px;
+
+        }
+        .links a i {
+		    margin-right: 8px;
+		}
+        /* Main Container */
+
+        .main-container {
+            margin: 20px auto;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .profile-heading {
+            font-size: 32px;
+            text-align: center;
+            margin: 20px 0 30px 0;
+            color: #333;
+        }
+
+        .container {
+            padding: 10px;
+        }
+
+        .options-and-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .options-bar {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .options-bar button {
+            padding: 10px 15px;
+            background-color: rgb(125, 125, 50);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .options-bar button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .options-bar button:hover {
+            background-color: rgb(142, 142, 4);
+        }
+
+        .main-content {
+            display: flex;
+            margin: 0px;
+        }
+
+        .sidebar {
+            flex: 0.5;
+            border-right: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .sidebar .image {
+            margin-bottom: 20px;
+        }
+
+        .sidebar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            cursor: pointer;
+        }
+
+        .sidebar button {
+            display: block;
+            padding: 10px 20px;
+            background-color: rgb(125, 125, 50);
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .sidebar button:hover {
+            background-color: rgb(142, 142, 4);
+        }
+
+        .sidebar .options button {
+            display: block;
+            margin: 10px auto;
+            width: 80%;
+        }
+
+        .content {
+            flex: 2;
+            padding: 20px;
+        }
+
+        form {
+            display: none;
+        }
+
+        form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group button {
+            padding: 10px 15px;
+            background-color: rgb(125, 125, 50);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .form-group button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .form-group button.reset-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Input Styling */
+        .input-container input {
+            width: 100%;
+            padding-right: 35px;
+            /* Space for the icon */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        /* Pencil Icon Styling */
+        .edit-icon {
+            position: absolute;
+            right: 10px;
+            color: #888;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Hover Effect for Icon */
+        .edit-icon:hover {
+            color: rgb(0, 0, 0);
+            /* Change color on hover */
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 10px;
+            color: #888;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Hover Effect for Icon */
+        .eye-icon:hover {
+            color: rgb(0, 0, 0);
+            /* Change color on hover */
+        }
+
+        #profile-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        #change-profile-btn {
+            padding: 10px 20px;
+            width: 80%;
+            /* Match the width of other sidebar buttons */
+        }
+
+        #save-profile-btn,
+        #cancel-profile-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: rgb(125, 125, 50);
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        #save-profile-btn:hover,
+        #cancel-profile-btn:hover {
+            background-color: rgb(142, 142, 4);
+        }
+
+        #cancel-profile-btn.reset-btn {
+            background-color: #999999;
+        }
+
+        #cancel-profile-btn.reset-btn:hover {
+            background-color: #777777;
+        }
+
+        /*post-area*/
+
+        .activity-heading {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .activity-container {
+            margin: 10px;
+        }
+
+        .posts-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .posts-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .post-card {
+            flex: 0 0 calc(47% - 20px);
+            box-sizing: border-box;
+            margin: 0;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgb(128, 128, 64);
+            border: 1px solid rgb(128, 128, 64);
+            overflow: hidden;
+            height: auto;
+        }
+
+        .post-header {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .post-header img {
+            margin: 0 10px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+
+        .post-info {
+            margin-left: 10px;
+        }
+
+        .post-author {
+            font-weight: bold;
+        }
+
+        .post-time {
+            font-size: 4px;
+            color: #888;
+        }
+
+        .description{
+			margin:10px;
+		}
+	   .description-container {
+		    display: inline;
+		}
+		
+		.description .dots {
+		    display: inline;
+		    
+		}
+		
+		.description .more {
+		    display: none;
+		    overflow-wrap: break-word;
+		    margin: 0;
+		}
+		
+		.see-more {
+			
+		    display: inline;
+		    background-color: transparent;
+		    border: none;
+		    color: rgb(128, 128, 128);
+		    cursor: pointer;
+		    font-size: 14px;
+		    margin: 0;
+		    padding: 0;
+		    
+		}
+
+
+        /* Media */
+        .media {
+            width: 100%;
+            position: relative;
+            /* Needed for image positioning */
+            display: flex;
+            /* Align image within the container */
+            justify-content: center;
+            /* Center the image horizontally */
+            align-items: center;
+            /* Center the image vertically */
+            overflow: hidden;
+            /* Prevent content spill */
+            aspect-ratio: 16/9;
+            /* Maintain consistent aspect ratio */
+            padding: 10px;
+            /* Add internal padding for balanced spacing */
+            box-sizing: border-box;
+            /* Ensure padding doesn't affect layout */
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0.1, 0.1);
+        }
+
+        .media img {
+            max-width: 100%;
+            /* Allow the image to scale down proportionally */
+            max-height: 100%;
+            /* Prevent the image from exceeding container height */
+            width: auto;
+            /* Maintain natural width */
+            height: auto;
+            /* Maintain natural height */
+            object-fit: contain;
+            border-radius: 8px;
+
+        }
+
+        /* Post Actions */
+        .post-actions {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            background: none;
+            border: none;
+            color: black;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0px 20px;
+            margin: 0 10px;
+        }
+
+        .lk,
+        .shr,
+        .cmnt {
+            color: rgb(128, 128, 64);
+        }
+
+        .action-btn i {
+            margin-right: 5px;
+        }
+
+        /* Comment Box */
+        .comment-box {
+            margin: 10px;
+        }
+
+        .comment-box textarea {
+            width: 100%;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            /* Center the modal */
+            padding: 20px;
+            border: 1px solid #888;
+            border-radius: 8px;
+            /* Rounded corners */
+            width: 80%;
+            /* Full width */
+            max-width: 500px;
+            /* Maximum width */
+            position: relative;
+            /* Positioning relative for close button */
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* Modal Header */
+        h2 {
+            font-size: 18px;
+            margin-top: 0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .btn-submit {
+            padding: 10px 20px;
+            border: none;
+            background-color: rgb(128, 128, 0);
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-submit:hover {
+            background-color: rgb(128, 128, 64);
+        }
+
+        .btn-submit:focus {
+            outline: none;
+        }
+
+        /* Media Query for Responsive Design */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 90%;
+                /* Adjust width for smaller screens */
+            }
+        }
+
+        /* Streak part */
+        .streak-day-count {
+            font-size: 30px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .streak-dates {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .streak-date {
+            flex: 1 1 14%;
+            /* Allows up to 7 items per row */
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .streak-circle {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            color: #f0f0f0;
+            border-radius: 50%;
+        }
+
+        .streak-circle.active {
+            color: #ff5722;
+        }
+
+        .streak-circle i {
+            font-size: 38px;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+            margin: 10px 15px 20px 15px;
+            border-radius: 5px;
+        }
+
+        input[type="hidden"] {
+            display: none;
+        }
+
+        .notification {
+            background-color: #d4edda;
+            color: rgb(0, 64, 0);
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+            /* Initially hidden */
+            font-size: 15px;
+        }
+
+        .notification.show {
+            display: block;
+        }
+        footer {
+		    background-color: rgb(32, 32, 0);
+		    color: white;
+		    text-align: center;
+		    padding: 10px;
+		    font-size: 20px;
+		    margin-top: auto; /* This ensures footer is always at the bottom of the page */
+		}
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+            <img th:if="${logoImageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${logoImageBase64}"
+                alt="Logo" />
+            <span class="navbar-text">ASPIRANT'S ALLEY</span>
+        </div>
+        <div class="links">
+			    <!-- Home Link -->
+			    <a href="/" class="home"><i class="fas fa-home"></i> Home</a>
+			
+			    <!-- About Link -->
+			    <a href="/about" class="about"><i class="fas fa-info-circle"></i> About</a>
+			
+			    <!-- Contact Link -->
+			    <a href="/contact" class="contact"><i class="fas fa-envelope"></i> Contact</a>
+			
+			    <!-- Profile Link (conditionally rendered) -->
+			    <a th:href="${isLoggedIn} ? '/profile' : '/login'" class="profile act">
+			        <i class="fas fa-user"></i> Profile
+			    </a>
+			
+			    <!-- Logout Link -->
+			    <a href="/logout" class="logout">
+			        <i class="fas fa-sign-out-alt"></i> Logout
+			    </a>
+			</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="container">
+            <h2 class="profile-heading">Profile Settings</h2>
+            <div class="main-content">
+                <div class="sidebar">
+                    <!-- Image Form -->
+                    <form id="image-form" class="active" th:action="@{/updateProfilePicture}" method="post"
+                        enctype="multipart/form-data">
+                        <div class="image">
+                            <img th:src="${user.base64ProfilePicture != null ? 'data:image/jpeg;base64,' + user.base64ProfilePicture : '/images/default-avatar.png'}"
+                                alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%;">
+                            <input type="file" id="profile-image-input" name="profileImage" accept="image/*"
+                                style="display: none;">
+                        </div>
+                        <div class="streak-day-count"
+                            th:text="${user.streakCount != null ? user.streakCount : 0} + ' day(s)'">0 day(s)</div>
+                        <div class="streak-dates">
+                            <div class="streak-date" th:each="date, iterStat : ${streakDates}">
+                                <div class="streak-circle"
+                                    th:classappend="${activeStreak[iterStat.index]} ? 'active' : ''">
+                                    <i
+                                        th:classappend="${activeStreak[iterStat.index]} ? 'fas fa-fire' : 'fas fa-circle'"></i>
+                                </div>
+                                <div th:text="${date}"></div>
+                            </div>
+                        </div>
+                        <div id="profile-actions-container"
+                            style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                            <button type="button" id="change-profile-btn">Change Profile Picture</button>
+                            <div id="profile-actions" style="display: none;">
+                                <button type="submit" id="save-profile-btn">Save</button>
+                                <button type="button" id="cancel-profile-btn" class="reset-btn">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="options-and-content">
+                    <div class="options-bar">
+                        <button id="user-details-btn">User Details</button>
+                        <button id="change-password-btn">Change Password</button>
+                        <button id="logout"><a href="/logout">Logout</a></button>
+                    </div>
+
+                    <div class="content">
+                        <!-- User Details Form -->
+                        <form id="user-details-form" class="active" method="post">
+                            <div class="form-group">
+                                <label>Username:</label>
+                                <input type="text" th:value="${user.username}" name="username" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Email:</label>
+                                <div class="input-container">
+                                    <input type="email" th:value="${user.email}" name="email" readonly>
+                                    <i class="fas fa-pencil-alt edit-icon"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number:</label>
+                                <div class="input-container">
+                                    <input type="text" th:value="${user.phoneNumber}" name="phoneNumber" readonly>
+                                    <i class="fas fa-pencil-alt edit-icon"></i>
+                                </div>
+                            </div>
+                            <div id="notification" class="notification" th:text="${message}"></div>
+                            <div class="form-group">
+                                <center>
+                                    <button type="submit">Update</button>
+                                    <button type="reset" class="reset-btn">Reset</button>
+                                </center>
+                            </div>
+
+                            <input type="hidden" th:value="${user.id}" name="userId">
+                        </form>
+
+                        <!-- Password Change Form -->
+                        <form id="change-password-form" method="post" action="/change-password">
+                            <div class="form-group">
+                                <label>Current Password:</label>
+                                <div class="input-container">
+                                    <input type="password" name="currentPassword" id="currentPassword" required>
+                                    <!-- <i class="fas fa-eye eye-icon" id="toggleCurrentPassword" style="cursor: pointer;"></i> -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password:</label>
+                                <div class="input-container">
+                                    <input type="password" name="newPassword" id="newPassword" required>
+                                    <!-- <i class="fas fa-eye eye-icon" id="toggleNewPassword" style="cursor: pointer;"></i> -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm New Password:</label>
+                                <div class="input-container">
+                                    <input type="password" name="confirmNewPassword" id="confirmNewPassword" required>
+                                    <!-- <i class="fas fa-eye eye-icon" id="toggleConfirmNewPassword" style="cursor: pointer;"></i> -->
+                                </div>
+                            </div>
+                            <div id="notification" class="notification" th:text="${message}"></div>
+                            <div class="form-group">
+                                <center>
+                                    <button type="submit">Change Password</button>
+                                    <button type="reset" class="reset-btn">Reset</button>
+                                </center>
+                            </div>
+                            <input type="hidden" th:value="${user.id}" name="userId">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="activity-container">
+            <h2 class="activity-heading">Activity</h2>
+            <div class="posts-container">
+                <div class="posts-section">
+                    <!-- Posts content goes here -->
+
+                    <div class="post-card" th:each="post : ${posts}">
+                        <div class="post-header">
+                            <img
+                                th:src="${post.profileBase64 != null ? 'data:image/jpeg;base64,' + post.profileBase64 : '/images/default-profile.png'}">
+                            <div class="post-info">
+                                <div class="post-author" th:text="${post.authorName}">Author</div>
+                                <div class="post-time" th:text="${post.formattedTimestamp}">Time</div>
+                            </div>
+                        </div>
+                        <div class="title">
+				        <div class="description-container" id="description-container-1">
+				            <p class="description">
+				                <span th:text="${post.content.length() > 25 ? post.content.substring(0, 25) : post.content}">
+				                    This is the visible part of the description.
+				                </span>
+				                <span class="dots" th:if="${post.content.length() > 25}">...</span>
+				                <span class="more" th:if="${post.content.length() > 25}" th:text="${post.content.substring(25)}">
+				                    This is the hidden content.
+				                </span>
+				                <button class="see-more" onclick="toggleDescription('description-container-1', this)" 
+				                th:if="${post.content.length() > 25}">See More</button>
+				            </p>
+				            
+				        </div>
+                        <div class="media">
+                            <img th:if="${post.base64MediaData != null}"
+                                th:src="'data:image/jpeg;base64,' + ${post.base64MediaData}" alt="Post Image" />
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn like-btn">
+                                <i class="fas fa-thumbs-up lk"></i> Like
+                            </button>
+                            <button class="action-btn comment-btn"
+                                th:onclick="'toggleCommentBox(\'commentBox' + ${post.id} + '\')'">
+                                <i class="fas fa-comment cmnt"></i> Comment
+                            </button>
+                            <button class="action-btn share-btn"
+                                th:onclick="'openShareModal(\'shareModal' + ${post.id} + '\', \'http://localhost:8080/' + ${post.id} + '\')'">
+                                <i class="fas fa-share shr"></i> Share
+                            </button>
+                        </div>
+                        <div class="comment-box" th:id="'commentBox' + ${post.id}" style="display: none;">
+                            <textarea placeholder="Write a comment..."></textarea>
+                            <button class="btn-submit">Post Comment</button>
+                        </div>
+                        <!-- Modal HTML -->
+                        <div th:id="'shareModal' + ${post.id}" class="modal" style="display: none;">
+                            <div class="modal-content">
+                                <span class="close"
+                                    th:onclick="'closeModal(\'shareModal' + ${post.id} + '\')'">&times;</span>
+                                <h2>Share this Post</h2>
+                                <input type="text" th:id="'shareLink' + ${post.id}" placeholder="Create a link"
+                                    th:value="'https://example.com/post/' + ${post.id}" readonly />
+                                <center><button class="btn-submit" th:onclick="'copyLink(\'shareLink' + ${post.id} + '\')'">Copy
+                                    Link</button></center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	 <footer>
+        <p>© 2024 ASPIRANT'S ALLEY. All Rights Reserved.</p>
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script>
+        // Store the original profile picture source
+        const profileImage = document.querySelector('.sidebar .image img');
+        const originalImageSrc = profileImage.src;
+
+        const userDetailsBtn = document.getElementById('user-details-btn');
+        const changePasswordBtn = document.getElementById('change-password-btn');
+        const userDetailsForm = document.getElementById('user-details-form');
+        const changePasswordForm = document.getElementById('change-password-form');
+        const profileImageInput = document.getElementById('profile-image-input');
+        const changeProfileBtn = document.getElementById('change-profile-btn');
+        const profileActions = document.getElementById('profile-actions');
+        const saveProfileBtn = document.getElementById('save-profile-btn');
+        const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+
+        changeProfileBtn.addEventListener('click', () => {
+            // Trigger the file input dialog
+            profileImageInput.click();
+        });
+
+        profileImageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profileImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        changeProfileBtn.addEventListener('click', () => {
+            changeProfileBtn.style.display = 'none';
+            profileActions.style.display = 'flex';
+        });
+
+        // Restore the original image and hide save/cancel buttons on cancel
+        cancelProfileBtn.addEventListener('click', () => {
+            // Restore the original profile image
+            profileImage.src = originalImageSrc;
+            // Show the Change Profile Picture button
+            changeProfileBtn.style.display = 'block';
+            // Hide the Save and Cancel buttons
+            profileActions.style.display = 'none';
+        });
+
+        userDetailsBtn.addEventListener('click', () => {
+            userDetailsForm.classList.add('active');
+            changePasswordForm.classList.remove('active');
+        });
+
+        changePasswordBtn.addEventListener('click', () => {
+            changePasswordForm.classList.add('active');
+            userDetailsForm.classList.remove('active');
+        });
+        function toggleCommentBox(commentBoxId) {
+            // Toggle the specific comment box
+            const commentBox = document.getElementById(commentBoxId);
+            if (commentBox) {
+                commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function openShareModal(modalId, link) {
+            // Open the share modal by setting its display style to 'block'
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+
+                // Update the link input field if needed
+                const linkInput = modal.querySelector('input[type="text"]');
+                if (linkInput) {
+                    linkInput.value = link; // Set the share link
+                }
+            }
+        }
+
+        function closeModal(modalId) {
+            // Close the modal by setting its display style to 'none'
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function copyLink(linkId) {
+            // Copy the share link to the clipboard
+            const linkInput = document.getElementById(linkId);
+            if (linkInput) {
+                linkInput.select(); // Select the text in the input field
+                document.execCommand('copy'); // Copy the selected text to the clipboard
+                alert('Link copied to clipboard!'); // Show a confirmation message
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Event listener for See More buttons
+            const seeMoreButtons = document.querySelectorAll('.see-more-btn');
+
+            seeMoreButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const description = button.previousElementSibling; // The paragraph element with the description
+                    const isExpanded = description.classList.toggle('expanded');
+                    button.textContent = isExpanded ? 'See Less' : 'See More';
+                });
+            });
+        });
+
+
+        document.querySelectorAll('.edit-icon').forEach(icon => {
+            icon.addEventListener('click', function () {
+                const inputField = this.previousElementSibling;
+                const originalValue = inputField.dataset.originalValue || inputField.value;
+
+                // Store the original value in a dataset attribute
+                inputField.dataset.originalValue = originalValue;
+
+                // Make the field editable and focus
+                inputField.removeAttribute('readonly');
+                inputField.focus();
+
+                // Add a blur event listener to revert to the original value if the input is unchanged
+                inputField.addEventListener('blur', function handleBlur() {
+                    // If the input has changed, update the value; otherwise, revert
+                    if (inputField.value !== originalValue) {
+                        // Update the original value to reflect the new value
+                        inputField.dataset.originalValue = inputField.value;
+                    }
+
+                    inputField.setAttribute('readonly', true);
+                    inputField.removeEventListener('blur', handleBlur);
+                });
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const notification = document.getElementById("notification");
+
+            if (notification.textContent.trim() !== "") {
+                notification.classList.add("show"); // Show the notification if it contains a message
+
+                // Optionally hide the notification after a few seconds
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 1000); // Adjust the timeout duration as needed
+            }
+        });
+        document.getElementById('updatePasswordBtn').addEventListener('click', function () {
+            const currentPassword = document.getElementById('currentPassword').value.trim();
+            const newPassword = document.getElementById('newPassword').value.trim();
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
+            const userId = document.getElementById('userId').value.trim();
+            const notification = document.getElementById('notification');
+
+            // Reset notification
+            notification.textContent = "";
+            notification.style.color = "red";
+
+            // Client-side validation
+            if (currentPassword === "") {
+                notification.textContent = "Current password is required.";
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                notification.textContent = "New password must be at least 8 characters long.";
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                notification.textContent = "New password and confirmation do not match.";
+                return;
+            }
+
+            // Send AJAX request
+            fetch('/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, currentPassword, newPassword })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        notification.textContent = "Password updated successfully!";
+                        notification.style.color = "green";
+                        // Clear the form
+                        document.getElementById('change-password-form').reset();
+                    } else {
+                        notification.textContent = data.message || "Failed to update password.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    notification.textContent = "An error occurred while updating the password.";
+                });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const notification = document.getElementById("notification");
+
+            if (notification.textContent.trim() !== "") {
+                notification.classList.add("show"); // Show the notification if it contains a message
+
+                // Optionally hide the notification after a few seconds
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                }, 1000); // Adjust the timeout duration as needed
+            }
+        });
+        function toggleDescription(containerId, button) {
+            const container = document.getElementById(containerId);
+            const dots = container.querySelector(".dots");
+            const moreText = container.querySelector(".more");
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                moreText.style.display = "none";
+                button.innerHTML = "See More";
+            } else {
+                dots.style.display = "none";
+                moreText.style.display = "inline";
+                button.innerHTML = "See Less";
+            }
+        }
+    </script>
+</body>
+
+</html>

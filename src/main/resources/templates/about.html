@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>About Us</title>
+    <style>
+		        body {
+		    font-family: Arial, sans-serif;
+		    background: url("https://png.pngtree.com/thumb_back/fh260/background/20231104/pngtree-abstract-texture-background-pattern-olive-green-paper-image_13771814.png") no-repeat center center fixed;
+		    background-size: cover;
+		    margin: 0;
+		    padding: 0;
+		    display: flex;
+		    flex-direction: column;
+		    min-height: 100vh; /* Ensures the body takes full height of the viewport */
+		}
+		
+		.navbar {
+		    background-color: rgb(128, 128, 0);
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    padding: 0 20px;
+		    height: 60px;
+		}
+		
+		.navbar .logo {
+		    display: flex;
+		    align-items: center;
+		}
+		
+		.navbar .logo img {
+		    height: 40px;
+		    border-radius: 50%;
+		}
+		
+		.navbar-text {
+		    padding-left: 20px;
+		    font-family: "Times New Roman", Times, serif;
+		    font-size: 20px;
+		    font-weight: bold;
+		    color: white;
+		}
+		
+		.navbar .links {
+		    display: flex;
+		    align-items: center;
+		}
+		
+		.navbar a {
+		    color: #f2f2f2;
+		    text-align: center;
+		    padding: 14px 20px;
+		    text-decoration: none;
+		    font-size: 16px;
+		    display: flex;
+		    align-items: center;
+		}
+		
+		.navbar a:hover {
+		    background-color: rgb(245, 245, 220);
+		    color: black;
+		    border-radius: 3px;
+		}
+		
+		.links a i {
+		    margin-right: 8px;
+		}
+		
+		.navbar .login-signup, .navbar .logout {
+		    display: flex;
+		    align-items: center;
+		}
+		
+		.navbar .login-signup a, .navbar .logout a {
+		    padding: 14px 20px;
+		    text-decoration: none;
+		    font-size: 16px;
+		    color: #f2f2f2;
+		}
+		
+		.navbar .login-signup a:hover, .navbar .logout a:hover {
+		    background-color: rgb(245, 245, 220);
+		    border-radius: 3px;
+		    color: black;
+		}
+		
+		.active {
+		    background-color: rgb(142, 147, 108);
+		    border-radius: 3px;
+		}
+		
+		header h1 {
+		    margin: 0;
+		}
+		
+		.container {
+		    max-width: 900px;
+		    margin: 30px auto;
+		    padding: 20px;
+		    background-color: white;
+		    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+		    border-radius: 8px;
+		    flex: 1; /* This will allow the container to take up available space */
+		}
+		
+		.section-title {
+		    font-size: 24px;
+		    color: #333;
+		    margin-bottom: 10px;
+		}
+		
+		.section-content {
+		    font-size: 16px;
+		    color: #555;
+		    line-height: 1.6;
+		}
+		
+		footer {
+		    background-color: rgb(32, 32, 0);
+		    color: white;
+		    text-align: center;
+		    padding: 10px;
+		    font-size: 20px;
+		    margin-top: auto; /* This ensures footer is always at the bottom of the page */
+		}
+		
+		.social-icons {
+		    margin-top: 10px;
+		}
+		
+		.social-icons a {
+		    margin: 0 10px;
+		    color: white;
+		    font-size: 20px;
+		    text-decoration: none;
+		}
+		
+		.social-icons a:hover {
+		    color: #f0f0f0;
+		}
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <img th:if="${logoImageBase64 != null}" th:src="'data:image/jpeg;base64,' + ${logoImageBase64}" alt="Logo Image" />
+            <span class="navbar-text">ASPIRANT'S ALLEY</span>
+        </div>
+        <div class="links">
+            <a href="/" class="home"><i class="fas fa-home"></i> Home</a>
+            <a href="/about" class="about active"><i class="fas fa-info-circle"></i> About</a>
+            <th:block th:if="${isLoggedIn}">
+			    <a href="/contact" class="contact"><i class="fas fa-envelope"></i> Contact Us</a>
+			    <a href="/profile" class="profile"><i class="fas fa-user"></i> Profile</a>
+			    <a href="/logout" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+			</th:block>
+			<th:block th:unless="${isLoggedIn}">
+			    <a href="/login" class="login"><i class="fas fa-sign-in-alt"></i> Login</a>
+			    <a href="/register" class="register"><i class="fas fa-user-plus"></i> Register</a>
+			</th:block>
+
+        </div>
+    </div>
+
+    <!-- Main content container -->
+    <div class="container">
+        <!-- Mission section -->
+        <section>
+            <h2 class="section-title">Our Mission</h2>
+            <p class="section-content">Our mission at the UPSC Blogging Platform is to provide an innovative and engaging space for UPSC aspirants to enhance their preparation. We aim to create a vibrant community where users can access the most relevant and up-to-date information, participate in meaningful discussions, and share valuable insights. Our platform's unique features, such as the streak system, motivate students to remain consistent in their preparation, ensuring that they stay connected and driven throughout their journey. By fostering a collaborative environment, we aim to bridge the gap between traditional study methods and modern, interactive learning tools. Ultimately, we strive to empower every UPSC aspirant with the resources, support, and community they need to succeed.</p>
+        </section>
+
+        <!-- Who We Are section -->
+        <section>
+            <h2 class="section-title">Who We Are</h2>
+            <p class="section-content">Founded in 2024, we are a dedicated team of educators, developers, and UPSC enthusiasts, committed to creating a dynamic, engaging, and reliable platform for UPSC aspirants. The Aspirant's Alley Platform is designed to bridge the gap between exam preparation and real-time, collaborative learning. With a deep understanding of the challenges faced by aspirants, we provide a space where users can engage with up-to-date content, share experiences, and participate in discussions that enrich their learning journey. Our platform brings together like-minded individuals with a shared goal of succeeding in the UPSC exam. Whether you're just beginning your preparation or are already deep into your studies, our platform offers a variety of features to help you stay motivated and focused.</p>
+        </section>
+
+        <!-- Our Values section -->
+        <section>
+            <h2 class="section-title">Our Values</h2>
+            <p class="section-content">At the UPSC Blogging Platform, our core values guide everything we do. These values ensure that we maintain the integrity, motivation, and quality of our platform. Our values are:</p>
+            <ul class="section-content">
+                <li><strong>Integrity:</strong> We uphold the highest standards of honesty and transparency in all interactions, ensuring that our platform remains a trustworthy source for UPSC aspirants.</li>
+                <li><strong>Collaboration:</strong> We believe in the power of collaboration and collective learning. Our platform encourages users to share knowledge, experiences, and insights to help each other succeed.</li>
+                <li><strong>Consistency:</strong> We understand that consistent effort is key to success in UPSC preparation. Through our streak system, we motivate aspirants to engage regularly and stay on track with their studies.</li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 ASPIRANT'S ALLEY. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
