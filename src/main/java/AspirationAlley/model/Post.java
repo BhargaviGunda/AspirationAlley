@@ -151,6 +151,7 @@ public class Post {
     public void setProfileBase64(String profileBase64) {
         this.profileBase64 = profileBase64;
     }
+    
 
     @Override
     public String toString() {

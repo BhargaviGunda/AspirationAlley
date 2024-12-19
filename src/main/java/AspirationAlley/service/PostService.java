@@ -117,4 +117,13 @@ public class PostService {
         return user.getUsername();
     }
 
+    // Method to find a Post by its ID
+    public Post findById(Long postId) {
+        // Use Optional to handle cases where the post might not be found
+        Optional<Post> postOptional = postRepository.findById(postId);
+        
+        // Return the post if found, or null if not found
+        return postOptional.orElse(null);
+    }
+
 }

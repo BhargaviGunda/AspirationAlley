@@ -185,11 +185,14 @@ public class UserService {
     			System.out.println(userId);
         userRepository.deleteById(userId);
     }
- // Method to find user by ID
-    public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    // Method to find a User by its ID
+    public User findById(Long userId) {
+        // Use Optional to handle cases where the user might not be found
+        Optional<User> userOptional = userRepository.findById(userId);
+        
+        // Return the user if found, or null if not found
+        return userOptional.orElse(null);
     }
-
     // Method to save or update the user
    
  // Method to get all users

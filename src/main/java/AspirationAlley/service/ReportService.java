@@ -1,8 +1,13 @@
 package AspirationAlley.service;
 
+import AspirationAlley.model.Post;
 import AspirationAlley.model.Report;
 import AspirationAlley.model.User;
+import AspirationAlley.repository.CommentRepository;
+import AspirationAlley.repository.PostRepository;
 import AspirationAlley.repository.ReportRepository;
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +19,13 @@ public class ReportService {
 
     @Autowired
     private ReportRepository reportRepository;
-
+    private PostRepository postRepository;
+    private CommentRepository commentRepository;
+    @Autowired
+    public ReportService(CommentRepository commentRepository, PostRepository postRepository) {
+        this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
+    }
     // Create a new report
     public Report createReport(User user, String content) {
         Report report = new Report(user, content);
@@ -41,19 +52,38 @@ public class ReportService {
         }
         return null;
     }
+    public void deleteReport(Long reportId) {
+        // Fetch the report from the repository
+        Optional<Report> reportOptional = reportRepository.findById(reportId);
 
-    // Delete a report (change status to DELETED)
-    public Report deleteReport(Long id) {
-        Optional<Report> report = reportRepository.findById(id);
-        if (report.isPresent()) {
-            Report existingReport = report.get();
-            existingReport.setStatus(Report.ReportStatus.DELETED);
-            return reportRepository.save(existingReport);
+        if (reportOptional.isPresent()) {
+            // Get the Report object
+            Report report = reportOptional.get();
+            // Get the associated Post object
+            Post post = report.getPost();
+
+            // Delete the report first to avoid foreign key violations
+            reportRepository.delete(report);
+
+            // Check if the report is associated with a Post
+            if (post != null) {
+                // Get the post ID
+                Long postId = post.getId();
+
+                // Delete all comments associated with the post
+                commentRepository.deleteByPostId(postId);
+
+                // Delete the post after comments are deleted
+                postRepository.delete(post);
+            }
+        } else {
+            // Throw an exception if the report is not found
+            throw new EntityNotFoundException("Report not found with id: " + reportId);
         }
-        return null;
     }
 
-    // Get all reports by user
+
+     // Get all reports by user
     public List<Report> getReportsByUserId(Long userId) {
         return reportRepository.findByUserId(userId);
     }
@@ -61,4 +91,14 @@ public class ReportService {
         // Logic to fetch all reports
         return reportRepository.findAll();
     }
+    // Save a report
+    public Report saveReport(Report report) {
+        return reportRepository.save(report);
+    }
+    // Method to get the total number of reports
+    public long getReportCount() {
+        return reportRepository.count();
+    }
+
+   
 }

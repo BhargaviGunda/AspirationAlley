@@ -1,6 +1,7 @@
 package AspirationAlley.model;
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,15 +27,26 @@ public class Report {
 
     @Column(nullable = false)
     private String content; // Reason for the report
+    @ManyToOne(cascade = CascadeType.ALL) // Cascade all operations including delete
+    @JoinColumn(name = "post_id") // Correctly maps to postId in the database
+    private Post post;
 
-    @Column(nullable = false)
+	@Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ReportStatus status; // Pending, Approved, Deleted
 
-    // Constructors, Getters, Setters
+    public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
+
+	// Constructors, Getters, Setters
     public Report() {
         this.createdAt = LocalDateTime.now();
         this.status = ReportStatus.PENDING;
@@ -88,6 +100,7 @@ public class Report {
     public void setStatus(ReportStatus status) {
         this.status = status;
     }
+    
 
     // Enum for report status
     public enum ReportStatus {

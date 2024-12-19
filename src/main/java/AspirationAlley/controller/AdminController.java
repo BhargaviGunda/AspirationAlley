@@ -34,18 +34,22 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+
     // Admin Dashboard: Display posts, reports, and users
     @GetMapping("/dashboard")
     public String showAdminDashboard(Model model) {
         List<Post> posts = postService.getAllPosts();
         List<Report> reports = reportService.getAllReports();
         List<User> users = userService.getAllUsers();
-        long userCount = userService.getUserCount();  // Get the number of users from the database
-        long postCount = postService.getPostCount();  // Get the number of posts from the database
+
+        long userCount = userService.getUserCount();  // Get the number of users
+        long postCount = postService.getPostCount();  // Get the number of posts
+        long reportCount = reportService.getReportCount();  // Get the number of reports
 
         // Add the counts to the model
         model.addAttribute("userCount", userCount);
         model.addAttribute("postCount", postCount);
+        model.addAttribute("reportCount", reportCount); // Adding report count
         model.addAttribute("posts", posts);
         model.addAttribute("reports", reports);
         model.addAttribute("users", users);
@@ -64,7 +68,19 @@ public class AdminController {
         return "view-post";  // Ensure you have a view-post.html page
     }
 
+ // Submit a report (for example, after approving or deleting)
+    @PostMapping("/submit-report")
+    public String submitReport(@ModelAttribute Report report, BindingResult result) {
+        if (result.hasErrors()) {
+            return "error";  // Return to an error page or handle as needed
+        }
 
+        // Submit the report to the service
+        reportService.saveReport(report);
+
+        // Redirect to the view reports page
+        return "redirect:/admin/view-reports";  // Redirect to the same page where reports are listed
+    }
 
     // View all reports
     @GetMapping("/view-reports")
@@ -72,6 +88,18 @@ public class AdminController {
         List<Report> reports = reportService.getAllReports();
         model.addAttribute("reports", reports);
         return "view-reports";  // Ensure you have a view-reports.html page to display reports
+    }
+    // Approve report
+    @PostMapping("/approve-report/{id}")
+    public String approveReport(@PathVariable Long id) {
+        reportService.approveReport(id);
+        return "redirect:/admin/view-reports";
+    }
+    // Delete report
+    @PostMapping("/delete-report/{id}")
+    public String deleteReport(@PathVariable Long id) {
+        reportService.deleteReport(id);
+        return "redirect:/admin/view-reports";
     }
 
     // View a specific user by their ID

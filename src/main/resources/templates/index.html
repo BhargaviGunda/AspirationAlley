@@ -844,47 +844,50 @@
                 menu.style.display = 'none';
             });
         }
-        // Function to show the report modal
-        function showReportModal(postId) {
-            // Show the report confirmation modal
-            const modal = document.getElementById('reportConfirmationModal');
-            modal.style.display = 'block';
+		// Function to show the report modal
+		function showReportModal(postId) {
+		    // Show the report confirmation modal
+		    const modal = document.getElementById('reportConfirmationModal');
+		    modal.style.display = 'block';
 
-            // Attach event listener for the "Yes" button in the modal
-            document.getElementById('confirmReportBtn').onclick = function () {
-                reportPost(postId); // Send AJAX request to report the post
-            };
-        }
+		    // Attach event listener for the "Yes" button in the modal
+		    document.getElementById('confirmReportBtn').onclick = function () {
+		        reportPost(postId); // Send AJAX request to report the post
+		    };
+		}
 
-        // Function to close the report modal
-        function closeReportModal() {
-            const modal = document.getElementById('reportConfirmationModal');
-            modal.style.display = 'none';
-        }
+		// Function to close the report modal
+		function closeReportModal() {
+		    const modal = document.getElementById('reportConfirmationModal');
+		    modal.style.display = 'none';
+		}
 
-        function reportPost(postId) {
-            const userId = document.querySelector('input[name="userId"]').value.trim();
+		// Updated reportPost function to redirect to the report page after a successful report
+		function reportPost(postId) {
+		    const userId = document.querySelector('input[name="userId"]').value.trim();
 
-            // Send AJAX request to report the post
-            fetch(`/reportPost/${postId}?userId=${userId}`, {
-                method: 'POST',
-            })
-                .then(response => response.json())  // Parse the JSON response
-                .then(data => {
-                    if (data.success) {
-                        alert('Post reported successfully!');
-                    } else {
-                        alert('Failed to report the post: ' + data.message);
-                    }
-                    closeReportModal();  // Close the modal after the request is done
-                })
-                .catch(error => {
-                    console.error('Error reporting the post:', error);
-                    alert('An error occurred while reporting the post.');
-                    closeReportModal();
-                });
-        }
-        document.addEventListener("DOMContentLoaded", function () {
+		    // Send AJAX request to report the post
+		    fetch(`/reportPost/${postId}?userId=${userId}`, {
+		        method: 'POST',
+		    })
+		    .then(response => response.json())  // Parse the JSON response
+		    .then(data => {
+		        if (data.success) {
+		            alert('Post reported successfully!');
+		            window.location.href = "/"; // Redirect to the view reports page
+		        } else {
+		            alert('Failed to report the post: ' + data.message);
+		        }
+		        closeReportModal();  // Close the modal after the request is done
+		    })
+		    .catch(error => {
+		        console.error('Error reporting the post:', error);
+		        alert('An error occurred while reporting the post.');
+		        closeReportModal();
+		    });
+		}
+	
+		document.addEventListener("DOMContentLoaded", function () {
             const notification = document.getElementById("notification");
 
             if (notification.textContent.trim() !== "") {

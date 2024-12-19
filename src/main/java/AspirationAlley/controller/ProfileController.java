@@ -1,16 +1,20 @@
 package AspirationAlley.controller;
 
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,11 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import AspirationAlley.model.Image;
 import AspirationAlley.model.Post;
+import AspirationAlley.model.Report;
 import AspirationAlley.model.User;
 import AspirationAlley.repository.PostRepository;
 import AspirationAlley.repository.UserRepository;
 import AspirationAlley.service.ImageService;
 import AspirationAlley.service.PostService;
+import AspirationAlley.service.ReportService;
 import AspirationAlley.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
@@ -37,6 +43,8 @@ public class ProfileController {
     private UserService userService;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private ReportService reportService;
 
     // Helper method to set common profile data
     private void setProfileData(Model model, HttpSession session) {
@@ -129,6 +137,32 @@ public class ProfileController {
 
         return "profile";
     }
+    @PostMapping("/reportPost/{postId}")
+    public ResponseEntity<?> reportPost(@PathVariable Long postId, @RequestParam Long userId) {
+        try {
+            // Retrieve the User and Post objects from the database using their IDs
+            User user = userService.findById(userId); // Assuming userService has a method to fetch a user by ID
+            Post post = postService.findById(postId); // Assuming postService has a method to fetch a post by ID
 
+            if (user == null || post == null) {
+                return ResponseEntity.status(HttpStatus.SC_NOT_FOUND)
+                        .body(Map.of("success", false, "message", "User or Post not found"));
+            }
+
+            // Create a new Report object
+            Report report = new Report(user, "Reason for the report"); // Pass the User and reason to the constructor
+            report.setPost(post); // Set the Post object
+
+            // Save the report in the database
+            reportService.saveReport(report);
+
+            // Return a success response
+            return ResponseEntity.ok(Map.of("success", true, "message", "Post reported successfully!"));
+        } catch (Exception e) {
+            // Return a failure response
+            return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
+                    .body(Map.of("success", false, "message", "Failed to report the post: " + e.getMessage()));
+        }
+    }
 
 }
